@@ -1,11 +1,13 @@
-import React, { useState } from 'react';    
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';    
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function CustomerCreation() {
     const navigate = useNavigate();
+    const location = useLocation()
 
   // State for form fields
   const [formData, setFormData] = useState({
+    id:null,
     fullName: '',
     email: '',
     phone: '',
@@ -18,6 +20,12 @@ function CustomerCreation() {
 
   // State for validation errors
   const [errors, setErrors] = useState({});
+
+  useEffect  (() =>{
+    if(location.state?.customer){
+      setFormData(location.state.customer)
+    }
+},[location.state])
 
   // Handle input changes
   const handleChange = (e) => {
@@ -42,32 +50,24 @@ function CustomerCreation() {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+    if (validateForm()) {
+      const customer = JSON.parse(localStorage.getItem("Customers")) || [];
+      if (formData.id) {
+        // Update existing user
+        const updatedCustomers = customer.map((cust) =>
+          cust.id === formData.id ? formData : cust
+        );
+        localStorage.setItem("Customers", JSON.stringify(updatedCustomers));
+      } else {
+        // Add new user
+        const newCustomer = { ...formData, id: Date.now() }; // Use timestamp as unique ID
+        customer.push(newCustomer);
+        localStorage.setItem("Customers", JSON.stringify(customer));
+      }
+      navigate("/CustomerList");
     }
-
-    // Log form data (replace with API call in production)
-    console.log('Customer Data:', formData);
-
-    // Reset form after submission
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      zip: '',
-      notes: ''
-    });
-    setErrors({});
-    alert('Customer created successfully!');
-   navigate("/CustomerList") 
-  
   };
 
   return (

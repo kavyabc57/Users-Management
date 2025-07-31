@@ -8,12 +8,14 @@ import EmployeeCreation from "./component/EmployeeManagement/EmployeeCreation";
 import UserCreationList from "./component/UserManagement/UserCreationList";
 import CustomerList from "./component/CustomerManagement/CustomerList";
 import EmployeeList from "./component/EmployeeManagement/EmployeeList";
+import Dashboard from "./component/Dashboard";
 
 function AppRouts() {
   return (
  <div>
       <Routes>
         <Route path="/" element={<Login/>} />
+        <Route path="/Dashboard" element={<Dashboard/>} />
         <Route path="/UserList" element={<UserCreationList/>} />
         <Route path="/UserCreation" element={<UserCraeation/>}/>
         <Route path="/CustomerList" element={<CustomerList/>} />

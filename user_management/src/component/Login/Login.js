@@ -5,7 +5,7 @@ function Login() {
   const navigate = useNavigate()
 
   const handleLogin = () =>{
-    navigate("Userlist")
+    navigate("/Dashboard")
   }
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">

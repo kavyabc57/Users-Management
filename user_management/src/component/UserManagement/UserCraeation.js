@@ -1,165 +1,11 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-
-// function UserCraeation() {
-  
-//     const navigate = useNavigate();
-  
-//     const handleUserSubmit=()=>{
-//       navigate("/UserList")
-//     }
-//   return (
-  
-
-//  <div class="container d-flex justify-content-center align-items-center min-vh-100 py-4"> 
-//     <div class="card p-3 shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
-//       <h2 class="text-center mb-3">Create User</h2>
-//       <form id="userForm" onsubmit="handleSubmit(event)">
-        
-//         <div class="mb-2">
-//           <label for="fullName" class="form-label">Full Name</label>
-//           <input
-//             type="text"
-//             class="form-control"
-//             id="fullName"
-//             name="fullName"
-//             placeholder="Enter full name"
-//             required
-//           />
-//         <div class="row">
-//           <div class="col-md-6 mb-2">
-//             <label for="firstName" class="form-label">First Name</label>
-//             <input
-//               type="text"
-//               class="form-control"
-//               id="firstName"
-//               name="firstName"
-//               placeholder="Enter first name"
-//               required
-//             />
-//             <div class="invalid-feedback">First name is required.</div>
-//           </div>
-//           <div class="col-md-6 mb-2">
-//             <label for="lastName" class="form-label">Last Name</label>
-//             <input
-//               type="text"
-//               class="form-control"
-//               id="lastName"
-//               name="lastName"
-//               placeholder="Enter last name"
-//               required
-//             />
-//             <div class="invalid-feedback">Last name is required.</div>
-//           </div>
-//         </div>
-
-//           <div class="invalid-feedback">Full name is required.</div>
-//         </div>
-
-//         <div class="row">
-//           <div class="col-md-6 mb-2">
-//             <label for="email" class="form-label">Email ID</label>
-//             <input
-//               type="email"
-//               class="form-control"
-//               id="email"
-//               name="email"
-//               placeholder="Enter email"
-//               required
-//             />
-//             <div class="invalid-feedback">Please enter a valid email.</div>
-//           </div>
-//           <div class="col-md-6 mb-2">
-//             <label for="phone" class="form-label">Phone Number</label>
-//             <input
-//               type="tel"
-//               class="form-control"
-//               id="phone"
-//               name="phone"
-//               placeholder="Enter 10-digit phone number"
-//               pattern="\d{10}"
-//               required
-//             />
-//             <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
-//           </div>
-//         </div>
-
-//         <div class="row">
-//           <div class="col-md-6 mb-2">
-//             <label for="dob" class="form-label">Date of Birth</label>
-//             <input
-//               type="date"
-//               class="form-control"
-//               id="dob"
-//               name="dob"
-//               required
-//             />
-//             <div class="invalid-feedback">Date of birth is required.</div>
-//           </div>
-//           <div class="col-md-6 mb-2">
-//             <label for="gender" class="form-label">Gender</label>
-//             <select
-//               class="form-select"
-//               id="gender"
-//               name="gender"
-//               required
-//             >
-//               <option value="">Select gender</option>
-//               <option value="male">Male</option>
-//               <option value="female">Female</option>
-//               <option value="other">Other</option>
-//             </select>
-//             <div class="invalid-feedback">Please select a gender.</div>
-//           </div>
-//         </div>
-
-//         <div class="row">
-//           <div class="col-md-6 mb-2">
-//             <label for="city" class="form-label">City</label>
-//             <input
-//               type="text"
-//               class="form-control"
-//               id="city"
-//               name="city"
-//               placeholder="Enter city"
-//               required
-//             />
-//             <div class="invalid-feedback">City is required.</div>
-//           </div>
-//           <div class="col-md-6 mb-2">
-//             <label for="address" class="form-label">Address</label>
-//             <input
-//               type="text"
-//               class="form-control"
-//               id="address"
-//               name="address"
-//               placeholder="Enter address"
-//               required
-//             />
-//             <div class="invalid-feedback">Address is required.</div>
-//           </div>
-//         </div>
-
-//         <button type="submit" class="btn btn-primary w-100 mt-2" onClick={handleUserSubmit}>Submit</button>
-//       </form>
-//     </div>
-//   </div>
-
-//   );
-// }
-
-
-// export default UserCraeation;
-
-
-
-
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function UserCreation() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
+    id: null, // Add id to track editing
     fullName: "",
     firstName: "",
     lastName: "",
@@ -172,30 +18,37 @@ function UserCreation() {
   });
   const [errors, setErrors] = useState({});
 
+  // Pre-populate form if editing
+  useEffect(() => {
+    if (location.state?.user) {
+      setFormData(location.state.user);
+    }
+  }, [location.state]);
+
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required.";
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email.";
     }
-    
+
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required.";
     } else if (!/^\d{10}$/.test(formData.phone)) {
       newErrors.phone = "Please enter a valid 10-digit phone number.";
     }
-    
+
     if (!formData.dob) newErrors.dob = "Date of birth is required.";
     if (!formData.gender) newErrors.gender = "Please select a gender.";
     if (!formData.city.trim()) newErrors.city = "City is required.";
     if (!formData.address.trim()) newErrors.address = "Address is required.";
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -203,7 +56,6 @@ function UserCreation() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Clear error for field when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -212,6 +64,19 @@ function UserCreation() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      if (formData.id) {
+        // Update existing user
+        const updatedUsers = users.map((user) =>
+          user.id === formData.id ? formData : user
+        );
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+      } else {
+        // Add new user
+        const newUser = { ...formData, id: Date.now() }; // Use timestamp as unique ID
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+      }
       navigate("/UserList");
     }
   };
@@ -219,8 +84,8 @@ function UserCreation() {
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100 py-4">
       <div className="card p-3 shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
-        <h2 className="text-center mb-3">Create User</h2>
-        <form id="userForm" onSubmit={handleSubmit}>
+        <h2 className="text-center mb-3">{formData.id ? "Edit User" : "Create User"}</h2>
+        <form id="userForm" onSubmit={handleSubmit} noValidate>
           <div className="mb-2">
             <label htmlFor="fullName" className="form-label">Full Name</label>
             <input
@@ -231,7 +96,6 @@ function UserCreation() {
               placeholder="Enter full name"
               value={formData.fullName}
               onChange={handleInputChange}
-              required
             />
             {errors.fullName && <div className="invalid-feedback">{errors.fullName}</div>}
           </div>
@@ -247,7 +111,6 @@ function UserCreation() {
                 placeholder="Enter first name"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                required
               />
               {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
             </div>
@@ -261,7 +124,6 @@ function UserCreation() {
                 placeholder="Enter last name"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                required
               />
               {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
             </div>
@@ -278,7 +140,6 @@ function UserCreation() {
                 placeholder="Enter email"
                 value={formData.email}
                 onChange={handleInputChange}
-                required
               />
               {errors.email && <div className="invalid-feedback">{errors.email}</div>}
             </div>
@@ -292,7 +153,6 @@ function UserCreation() {
                 placeholder="Enter 10-digit phone number"
                 value={formData.phone}
                 onChange={handleInputChange}
-                required
               />
               {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
             </div>
@@ -308,7 +168,6 @@ function UserCreation() {
                 name="dob"
                 value={formData.dob}
                 onChange={handleInputChange}
-                required
               />
               {errors.dob && <div className="invalid-feedback">{errors.dob}</div>}
             </div>
@@ -320,7 +179,6 @@ function UserCreation() {
                 name="gender"
                 value={formData.gender}
                 onChange={handleInputChange}
-                required
               >
                 <option value="">Select gender</option>
                 <option value="male">Male</option>
@@ -342,7 +200,6 @@ function UserCreation() {
                 placeholder="Enter city"
                 value={formData.city}
                 onChange={handleInputChange}
-                required
               />
               {errors.city && <div className="invalid-feedback">{errors.city}</div>}
             </div>
@@ -356,13 +213,14 @@ function UserCreation() {
                 placeholder="Enter address"
                 value={formData.address}
                 onChange={handleInputChange}
-                required
               />
               {errors.address && <div className="invalid-feedback">{errors.address}</div>}
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100 mt-2">Submit</button>
+          <button type="submit" className="btn btn-primary w-100 mt-2">
+            {formData.id ? "Update" : "Submit"}
+          </button>
         </form>
       </div>
     </div>
