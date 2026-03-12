@@ -4,8 +4,6 @@ function Header() {
 
   const user = JSON.parse(localStorage.getItem("data"))
 
-  console.log(user)
-
   return (
     <header className="header bg-primary text-white p-3">
       <div className="container-fluid d-flex justify-content-end">
