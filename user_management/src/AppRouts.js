@@ -1,6 +1,5 @@
-
-import React from "react"
-import { Route,Routes } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import UserCraeation from "./component/UserManagement/UserCraeation";
 import Login from "./component/Login/Login";
 import CustomerCreation from "./component/CustomerManagement/CustomerCreation";
@@ -12,21 +11,21 @@ import Dashboard from "./component/Dashboard";
 
 function AppRouts() {
   return (
- <div>
+    <div>
       <Routes>
-        <Route path="/" element={<Login/>} />
-        <Route path="/Dashboard" element={<Dashboard/>} />
-        <Route path="/UserList" element={<UserCreationList/>} />
-        <Route path="/UserCreation" element={<UserCraeation/>}/>
-        <Route path="/CustomerList" element={<CustomerList/>} />
-        <Route path="/CreateCustomer" element={<CustomerCreation/>}/>
+        <Route path="/" element={<Login />} />
 
-    
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/UserList" element={<UserCreationList />} />
+        <Route path="/UserCreation" element={<UserCraeation />} />
+        <Route path="/CustomerList" element={<CustomerList />} />
+        <Route path="/CreateCustomer" element={<CustomerCreation />} />
+
         <Route path="/EmployeeList" element={<EmployeeList />} />
-        <Route path="/EmployeeCreation" element={<EmployeeCreation/>}/>
+        <Route path="/EmployeeCreation" element={<EmployeeCreation />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default AppRouts
+export default AppRouts;

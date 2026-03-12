@@ -1,8 +1,3 @@
-// 
-
-
-
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -42,7 +37,10 @@ function CustomerList() {
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCustomers = filteredCustomers.slice(indexOfFirstItem, indexOfLastItem);
+  const currentCustomers = filteredCustomers.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
@@ -82,7 +80,11 @@ function CustomerList() {
   return (
     <div className="container mt-3">
       <div>
-        <span onClick={handleBack} className="cursor-pointer" style={{ cursor: "pointer" }}>
+        <span
+          onClick={handleBack}
+          className="cursor-pointer"
+          style={{ cursor: "pointer" }}
+        >
           <i className="fa fa-arrow-left mr-2" aria-hidden="true"></i> Back
         </span>
       </div>
@@ -156,36 +158,45 @@ function CustomerList() {
       {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="d-flex align-items-center justify-content-between">
-            <div>
-              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
-            </div>
-        <nav aria-label="Page navigation">
-          <ul className="pagination justify-content-center">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={handlePrevPage}>
-                Previous
-              </button>
-            </li>
-            {getPageNumbers().map((number) => (
+          <div>
+            Showing {indexOfFirstItem + 1} to{" "}
+            {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </div>
+          <nav aria-label="Page navigation">
+            <ul className="pagination justify-content-center">
               <li
-                key={number}
-                className={`page-item ${currentPage === number ? 'active' : ''}`}
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
               >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(number)}
-                >
-                  {number}
+                <button className="page-link" onClick={handlePrevPage}>
+                  Previous
                 </button>
               </li>
-            ))}
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={handleNextPage}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
+              {getPageNumbers().map((number) => (
+                <li
+                  key={number}
+                  className={`page-item ${
+                    currentPage === number ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(number)}
+                  >
+                    {number}
+                  </button>
+                </li>
+              ))}
+              <li
+                className={`page-item ${
+                  currentPage === totalPages ? "disabled" : ""
+                }`}
+              >
+                <button className="page-link" onClick={handleNextPage}>
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
       )}
     </div>
