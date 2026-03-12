@@ -8,9 +8,6 @@ function Login() {
     email:"",
     password:""
   })
-
-  console.log(formData)
-
   
   const [errors, setErrors] = useState({
     email: "",

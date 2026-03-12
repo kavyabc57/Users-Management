@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function CustomerCreation() {
     const navigate = useNavigate();
     const location = useLocation()
-
-  // State for form fields
   const [formData, setFormData] = useState({
     id:null,
     fullName: '',
